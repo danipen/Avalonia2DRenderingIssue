@@ -29,7 +29,7 @@ namespace Avalonia2DRenderingIssue
             {
                 StreamGeometry geometry = new StreamGeometry();
 
-                using (StreamGeometryContext context = geometry.Open())
+                using (var context = new PreciseStreamGeometryContextWrapper(geometry.Open()))
                 {
                     Create(
                         context,
@@ -41,7 +41,7 @@ namespace Avalonia2DRenderingIssue
             }
 
             public static void Create(
-                StreamGeometryContext context,
+                PreciseStreamGeometryContextWrapper context,
                 double x,
                 double y,
                 double width,
@@ -124,7 +124,7 @@ namespace Avalonia2DRenderingIssue
             }
 
             // Add a rectangle in the botton, from right to left
-            static Point AddBottomRectangle(StreamGeometryContext context, Rect r, double x, double y, double minx, double shapeOffset)
+            static Point AddBottomRectangle(PreciseStreamGeometryContextWrapper context, Rect r, double x, double y, double minx, double shapeOffset)
             {
                 r = new Rect(
                     r.X, r.Y + shapeOffset, r.Width, r.Height);

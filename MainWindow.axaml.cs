@@ -19,6 +19,9 @@ namespace Avalonia2DRenderingIssue
             this.AttachDevTools();
 #endif
 
+            this.Renderer.DrawDirtyRects = true;
+            this.Renderer.DrawFps = true;
+
             DockPanel dockPanel = new DockPanel();
             StackPanel stackPanel = new StackPanel();
             stackPanel.Orientation = Orientation.Horizontal;
@@ -45,8 +48,27 @@ namespace Avalonia2DRenderingIssue
             mScrollViewer.VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
             mScrollViewer.HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Visible;
 
+            mScrollViewer.ClipToBounds = true;
+            mCanvas.ClipToBounds = true;
+
+            DockPanel contentPanel = new DockPanel();
+            
+            Panel leftPanel = new Panel();
+            leftPanel.Background = Brushes.LightGray;
+            leftPanel.Width = 300;
+            DockPanel.SetDock(leftPanel, Dock.Left);
+
+            Panel rightPanel = new Panel();
+            rightPanel.Background = Brushes.LightGray;
+            rightPanel.Width = 300;
+            DockPanel.SetDock(rightPanel, Dock.Right);
+
+            contentPanel.Children.Add(leftPanel);
+            contentPanel.Children.Add(rightPanel);
+            contentPanel.Children.Add(mScrollViewer);
+
             dockPanel.Children.Add(stackPanel);
-            dockPanel.Children.Add(mScrollViewer);
+            dockPanel.Children.Add(contentPanel);
 
             Content = dockPanel;
 
@@ -80,7 +102,7 @@ namespace Avalonia2DRenderingIssue
         void MoveToShape()
         {
             Dispatcher.UIThread.InvokeAsync(() =>
-                mScrollViewer.Offset = new Vector((1934831 + 1786 - 500) * mZoomLevel, 0)
+                mScrollViewer.Offset = new Vector((1934831 + 1786 - 150) * mZoomLevel, 0)
             , DispatcherPriority.Render - 1);
         }
 
